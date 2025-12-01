@@ -107,12 +107,50 @@ public class TeamsRepository : GenericRepository<Team>, ITeamsRepository
         };
     }
 
+    public override async Task<ActionResponse<IEnumerable<Team>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Teams
+            .Include(x => x.Country)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        return new ActionResponse<IEnumerable<Team>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
     public async Task<IEnumerable<Team>> GetComboAsync(int countryId)
     {
         return await _context.Teams
             .Where(x => x.CountryId == countryId)
             .OrderBy(x => x.Name)
             .ToListAsync();
+    }
+
+    public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Teams.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
+        };
     }
 
     public async Task<ActionResponse<Team>> UpdateAsync(TeamDTO teamDTO)
