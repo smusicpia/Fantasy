@@ -9,7 +9,7 @@ namespace Fantasy.Frontend.Shared;
 
 public partial class ConfirmDialog
 {
-    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = null!;
     [Inject] private IStringLocalizer<Literals> Localizer { get; set; } = null!;
     [Parameter] public string Message { get; set; } = null!;
 
