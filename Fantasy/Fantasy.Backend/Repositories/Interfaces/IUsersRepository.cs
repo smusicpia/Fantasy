@@ -1,4 +1,5 @@
-﻿using Fantasy.Shared.Entities;
+﻿using Fantasy.Shared.DTOs;
+using Fantasy.Shared.Entities;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -15,4 +16,8 @@ public interface IUsersRepository
     Task AddUserToRoleAsync(User user, string roleName);
 
     Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+    Task<SignInResult> LoginAsync(LoginDTO model);
+
+    Task LogoutAsync();
 }
