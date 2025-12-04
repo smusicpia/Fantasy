@@ -1,12 +1,10 @@
-﻿using Fantasy.Backend.Data;
-using Fantasy.Backend.UnitsOfWork.Interfaces;
+﻿using Fantasy.Backend.UnitsOfWork.Interfaces;
 using Fantasy.Shared.DTOs;
 using Fantasy.Shared.Entities;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Fantasy.Backend.Controllers;
 
@@ -22,6 +20,7 @@ public class CountriesController : GenericController<Country>
         _countriesUnitOfWork = countriesUnitOfWork;
     }
 
+    [AllowAnonymous]
     [HttpGet("combo")]
     public async Task<IActionResult> GetComboAsync()
     {
