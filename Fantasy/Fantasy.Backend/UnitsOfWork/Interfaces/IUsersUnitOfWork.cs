@@ -11,6 +11,8 @@ public interface IUsersUnitOfWork
 
     Task AddUserToRoleAsync(User user, string roleName);
 
+    Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
     Task CheckRoleAsync(string roleName);
 
     Task<IdentityResult> ConfirmEmailAsync(User user, string token);
@@ -26,4 +28,6 @@ public interface IUsersUnitOfWork
     Task<SignInResult> LoginAsync(LoginDTO model);
 
     Task LogoutAsync();
+
+    Task<IdentityResult> UpdateUserAsync(User user);
 }
