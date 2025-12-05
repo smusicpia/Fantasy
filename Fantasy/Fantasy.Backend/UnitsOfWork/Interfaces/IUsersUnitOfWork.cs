@@ -23,11 +23,15 @@ public interface IUsersUnitOfWork
 
     Task<string> GenerateEmailConfirmationTokenAsync(User user);
 
+    Task<string> GeneratePasswordResetTokenAsync(User user);
+
     Task<bool> IsUserInRoleAsync(User user, string roleName);
 
     Task<SignInResult> LoginAsync(LoginDTO model);
 
     Task LogoutAsync();
+
+    Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
 
     Task<IdentityResult> UpdateUserAsync(User user);
 }

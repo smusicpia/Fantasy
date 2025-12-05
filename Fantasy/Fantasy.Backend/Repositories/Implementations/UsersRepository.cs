@@ -79,6 +79,11 @@ public class UsersRepository : IUsersRepository
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
+    public async Task<string> GeneratePasswordResetTokenAsync(User user)
+    {
+        return await _userManager.GeneratePasswordResetTokenAsync(user);
+    }
+
     public async Task<bool> IsUserInRoleAsync(User user, string roleName)
     {
         return await _userManager.IsInRoleAsync(user, roleName);
@@ -92,6 +97,11 @@ public class UsersRepository : IUsersRepository
     public async Task LogoutAsync()
     {
         await _signInManager.SignOutAsync();
+    }
+
+    public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+    {
+        return await _userManager.ResetPasswordAsync(user, token, password);
     }
 
     public async Task<IdentityResult> UpdateUserAsync(User user)
