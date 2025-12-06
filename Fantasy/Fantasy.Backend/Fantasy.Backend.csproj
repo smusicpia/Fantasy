@@ -621,4 +621,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\Tournaments\" />
+  </ItemGroup>
+
 </Project>
