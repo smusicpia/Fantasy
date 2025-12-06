@@ -27,7 +27,7 @@ public class TournamentsRepository : GenericRepository<Tournament>, ITournaments
             IsActive = false,
             Name = tournamentDTO.Name,
             Remarks = tournamentDTO.Remarks,
-            TournamentTeams = new List<TournamentTeam>()
+            TournamentTeams = []
         };
 
         if (!string.IsNullOrEmpty(tournamentDTO.Image))
@@ -66,12 +66,12 @@ public class TournamentsRepository : GenericRepository<Tournament>, ITournaments
 
     public override async Task<ActionResponse<Tournament>> GetAsync(int id)
     {
-        var team = await _context.Tournaments
+        var tournament = await _context.Tournaments
              .Include(x => x.TournamentTeams!)
              .ThenInclude(x => x.Team)
              .FirstOrDefaultAsync(c => c.Id == id);
 
-        if (team == null)
+        if (tournament == null)
         {
             return new ActionResponse<Tournament>
             {
@@ -83,7 +83,7 @@ public class TournamentsRepository : GenericRepository<Tournament>, ITournaments
         return new ActionResponse<Tournament>
         {
             WasSuccess = true,
-            Result = team
+            Result = tournament
         };
     }
 
@@ -141,7 +141,7 @@ public class TournamentsRepository : GenericRepository<Tournament>, ITournaments
             return new ActionResponse<Tournament>
             {
                 WasSuccess = false,
-                Message = "ERR005"
+                Message = "ERR009"
             };
         }
 
