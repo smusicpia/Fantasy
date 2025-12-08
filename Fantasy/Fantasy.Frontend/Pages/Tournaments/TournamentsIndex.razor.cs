@@ -93,6 +93,11 @@ public partial class TournamentsIndex
         };
     }
 
+    private void MatchesAction(Tournament tournament)
+    {
+        NavigationManager.NavigateTo($"/tournament/matches/{tournament.Id}");
+    }
+
     private async Task SetFilterValue(string value)
     {
         Filter = value;
