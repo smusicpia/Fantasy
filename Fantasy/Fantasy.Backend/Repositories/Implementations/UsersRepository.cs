@@ -28,7 +28,14 @@ public class UsersRepository : IUsersRepository
 
     public async Task<IdentityResult> AddUserAsync(User user, string password)
     {
-        return await _userManager.CreateAsync(user, password);
+        if (!string.IsNullOrEmpty(user.Photo) && !user.Photo.StartsWith("http"))
+        {
+            var imageBase64 = Convert.FromBase64String(user.Photo!);
+            user.Photo = await _fileStorage.SaveFileAsync(imageBase64, ".jpg", "users");
+        }
+
+        var result = await _userManager.CreateAsync(user, password);
+        return result;
     }
 
     public async Task AddUserToRoleAsync(User user, string roleName)
