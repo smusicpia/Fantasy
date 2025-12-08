@@ -2,6 +2,7 @@
 using Fantasy.Backend.UnitsOfWork.Interfaces;
 using Fantasy.Shared.DTOs;
 using Fantasy.Shared.Entities;
+using Fantasy.Shared.Responses;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -30,9 +31,13 @@ public class UsersUnitOfWork : IUsersUnitOfWork
 
     public async Task<User> GetUserAsync(Guid userId) => await _usersRepository.GetUserAsync(userId);
 
+    public async Task<ActionResponse<IEnumerable<User>>> GetAsync(PaginationDTO pagination) => await _usersRepository.GetAsync(pagination);
+
     public async Task<string> GenerateEmailConfirmationTokenAsync(User user) => await _usersRepository.GenerateEmailConfirmationTokenAsync(user);
 
     public async Task<string> GeneratePasswordResetTokenAsync(User user) => await _usersRepository.GeneratePasswordResetTokenAsync(user);
+
+    public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _usersRepository.GetTotalRecordsAsync(pagination);
 
     public async Task<bool> IsUserInRoleAsync(User user, string roleName) => await _usersRepository.IsUserInRoleAsync(user, roleName);
 

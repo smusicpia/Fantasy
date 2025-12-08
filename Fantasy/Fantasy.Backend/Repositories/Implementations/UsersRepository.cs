@@ -3,6 +3,7 @@ using Fantasy.Backend.Helpers;
 using Fantasy.Backend.Repositories.Interfaces;
 using Fantasy.Shared.DTOs;
 using Fantasy.Shared.Entities;
+using Fantasy.Shared.Responses;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +82,29 @@ public class UsersRepository : IUsersRepository
         return user!;
     }
 
+    public async Task<ActionResponse<IEnumerable<User>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Users
+            .Include(x => x.Country)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
+                                                x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        return new ActionResponse<IEnumerable<User>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.FirstName)
+                .ThenBy(x => x.LastName)
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
     public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
     {
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -89,6 +113,24 @@ public class UsersRepository : IUsersRepository
     public async Task<string> GeneratePasswordResetTokenAsync(User user)
     {
         return await _userManager.GeneratePasswordResetTokenAsync(user);
+    }
+
+    public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Users.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
+                                                x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
+        };
     }
 
     public async Task<bool> IsUserInRoleAsync(User user, string roleName)
