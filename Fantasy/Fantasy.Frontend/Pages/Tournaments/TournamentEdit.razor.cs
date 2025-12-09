@@ -35,7 +35,7 @@ public partial class TournamentEdit
             else
             {
                 var messageError = await responseHttp.GetErrorMessageAsync();
-                Snackbar.Add(messageError, Severity.Error);
+                Snackbar.Add(messageError!, Severity.Error);
             }
         }
         else

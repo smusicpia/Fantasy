@@ -28,7 +28,6 @@ public partial class TournamentForm
 
     [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
     [Inject] private IStringLocalizer<Literals> Localizer { get; set; } = null!;
-    [Inject] private IRepository Repository { get; set; } = null!;
 
     private string? imageUrl;
     private string? isActiveMessage;
