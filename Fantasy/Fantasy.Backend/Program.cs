@@ -74,6 +74,8 @@ builder.Services.AddScoped<ITournamentTeamsRepository, TournamentTeamsRepository
 builder.Services.AddScoped<ITournamentTeamsUnitOfWork, TournamentTeamsUnitOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+builder.Services.AddScoped<IUserGroupsRepository, UserGroupsRepository>();
+builder.Services.AddScoped<IUserGroupsUnitOfWork, UserGroupsUnitOfWork>();
 
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddIdentity<User, IdentityRole>(x =>
