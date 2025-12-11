@@ -1,4 +1,9 @@
+using System.Net;
+using System.Runtime.CompilerServices;
+
 using Fantasy.Frontend.Pages.Auth;
+using Fantasy.Frontend.Repositories;
+using Fantasy.Shared.Entities;
 using Fantasy.Shared.Resources;
 
 using Microsoft.AspNetCore.Components;
@@ -12,6 +17,7 @@ namespace Fantasy.Frontend.Shared;
 public partial class AuthLinks
 {
     private string? photoUser;
+    private string? fullNameUser;
 
     [Inject] private IStringLocalizer<Literals> Localizer { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -23,10 +29,11 @@ public partial class AuthLinks
         var authenticationState = await AuthenticationStateTask;
         var claims = authenticationState.User.Claims.ToList();
         var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
-        var nameClaim = claims.FirstOrDefault(x => x.Type == "UserName");
-        if (photoClaim is not null)
+        var nameClaim = claims.FirstOrDefault(x => x.Type == "FullName");
+        if (photoClaim is not null && !string.IsNullOrEmpty(photoClaim.Value.ToString()))
         {
             photoUser = photoClaim.Value;
+            fullNameUser = nameClaim?.Value;
         }
     }
 

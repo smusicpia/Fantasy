@@ -128,44 +128,6 @@ public class AccountsController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpPut]
-    public async Task<IActionResult> PutAsync(User user)
-    {
-        try
-        {
-            var currentUser = await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!);
-            if (currentUser == null)
-            {
-                return NotFound();
-            }
-
-            if (!string.IsNullOrEmpty(user.Photo))
-            {
-                var photoUser = Convert.FromBase64String(user.Photo);
-                user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", "users");
-            }
-
-            currentUser.FirstName = user.FirstName;
-            currentUser.LastName = user.LastName;
-            currentUser.PhoneNumber = user.PhoneNumber;
-            currentUser.Photo = !string.IsNullOrEmpty(user.Photo) && user.Photo != currentUser.Photo ? user.Photo : currentUser.Photo;
-            currentUser.CountryId = user.CountryId;
-
-            var result = await _usersUnitOfWork.UpdateUserAsync(currentUser);
-            if (result.Succeeded)
-            {
-                return Ok(BuildToken(currentUser));
-            }
-
-            return BadRequest(result.Errors.FirstOrDefault());
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet]
     public async Task<IActionResult> GetAsync()
     {
@@ -218,6 +180,44 @@ public class AccountsController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPut]
+    public async Task<IActionResult> PutAsync(User user)
+    {
+        try
+        {
+            var currentUser = await _usersUnitOfWork.GetUserAsync(User.Identity!.Name!);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(user.Photo))
+            {
+                var photoUser = Convert.FromBase64String(user.Photo);
+                user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", "users");
+            }
+
+            currentUser.FirstName = user.FirstName;
+            currentUser.LastName = user.LastName;
+            currentUser.PhoneNumber = user.PhoneNumber;
+            currentUser.Photo = !string.IsNullOrEmpty(user.Photo) && user.Photo != currentUser.Photo ? user.Photo : currentUser.Photo;
+            currentUser.CountryId = user.CountryId;
+
+            var result = await _usersUnitOfWork.UpdateUserAsync(currentUser);
+            if (result.Succeeded)
+            {
+                return Ok(BuildToken(currentUser));
+            }
+
+            return BadRequest(result.Errors.FirstOrDefault());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("ResedToken")]
@@ -283,6 +283,7 @@ public class AccountsController : ControllerBase
                 new("FirstName", user.FirstName),
                 new("LastName", user.LastName),
                 new("Photo", user.Photo ?? string.Empty),
+                new("FullName", user.FirstName + " " + user.LastName),
                 new("CountryId", user.Country.Id.ToString())
             };
 

@@ -5,6 +5,8 @@ using Fantasy.Shared.Resources;
 
 using Microsoft.AspNetCore.Identity;
 
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Fantasy.Shared.Entities;
 
 public class User : IdentityUser
@@ -38,6 +40,8 @@ public class User : IdentityUser
     public ICollection<Group>? GroupsManaged { get; set; }
 
     public ICollection<UserGroup>? GroupsBelong { get; set; }
+
+    public string PhotoFull => string.IsNullOrEmpty(Photo) ? "/images/NoImage.png" : Photo;
 
     public ICollection<Prediction>? Predictions { get; set; }
 

@@ -474,4 +474,7 @@
   <data name="Confirmed" xml:space="preserve">
     <value>Confirmed</value>
   </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Please wait...</value>
+  </data>
 </root>

@@ -33,7 +33,7 @@ public class MailHelper : IMailHelper
             message.From.Add(new MailboxAddress(name, from));
             message.To.Add(new MailboxAddress(toName, toEmail));
             message.Subject = subject;
-            BodyBuilder bodyBuilder = new BodyBuilder
+            BodyBuilder bodyBuilder = new()
             {
                 HtmlBody = body
             };

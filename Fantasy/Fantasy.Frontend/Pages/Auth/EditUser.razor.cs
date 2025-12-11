@@ -62,7 +62,7 @@ public partial class EditUser
                 return;
             }
             var messageError = await responseHttp.GetErrorMessageAsync();
-            Snackbar.Add(messageError, Severity.Error);
+            Snackbar.Add(messageError!, Severity.Error);
             return;
         }
         user = responseHttp.Response;
@@ -81,7 +81,7 @@ public partial class EditUser
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            Snackbar.Add(Localizer[message], Severity.Error);
+            Snackbar.Add(Localizer[message!], Severity.Error);
             return;
         }
         countries = responseHttp.Response;
@@ -111,7 +111,7 @@ public partial class EditUser
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            Snackbar.Add(Localizer[message], Severity.Error);
+            Snackbar.Add(Localizer[message!], Severity.Error);
             return;
         }
 

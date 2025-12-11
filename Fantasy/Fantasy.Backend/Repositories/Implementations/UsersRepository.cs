@@ -69,7 +69,7 @@ public class UsersRepository : IUsersRepository
     public async Task<User> GetUserAsync(string email)
     {
         var user = await _context.Users
-            .Include(u => u.Country)
+            .Include(x => x.Country)
             .FirstOrDefaultAsync(x => x.Email == email);
         return user!;
     }
@@ -77,7 +77,7 @@ public class UsersRepository : IUsersRepository
     public async Task<User> GetUserAsync(Guid userId)
     {
         var user = await _context.Users
-            .Include(u => u.Country)
+            .Include(x => x.Country)
             .FirstOrDefaultAsync(x => x.Id == userId.ToString());
         return user!;
     }
@@ -91,7 +91,7 @@ public class UsersRepository : IUsersRepository
         if (!string.IsNullOrWhiteSpace(pagination.Filter))
         {
             queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
-                                                x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+                                             x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
         }
 
         return new ActionResponse<IEnumerable<User>>
@@ -122,7 +122,7 @@ public class UsersRepository : IUsersRepository
         if (!string.IsNullOrWhiteSpace(pagination.Filter))
         {
             queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
-                                                x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+                                             x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
         }
 
         double count = await queryable.CountAsync();

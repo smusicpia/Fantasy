@@ -15,11 +15,11 @@ public class MatchesUnitOfWork : GenericUnitOfWork<Match>, IMatchesUnitOfWork
         _matchesRepository = matchesRepository;
     }
 
+    public async Task<ActionResponse<Match>> AddAsync(MatchDTO matchDTO) => await _matchesRepository.AddAsync(matchDTO);
+
     public override async Task<ActionResponse<Match>> GetAsync(int id) => await _matchesRepository.GetAsync(id);
 
     public override async Task<ActionResponse<IEnumerable<Match>>> GetAsync(PaginationDTO pagination) => await _matchesRepository.GetAsync(pagination);
-
-    public async Task<ActionResponse<Match>> AddAsync(MatchDTO matchDTO) => await _matchesRepository.AddAsync(matchDTO);
 
     public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _matchesRepository.GetTotalRecordsAsync(pagination);
 
