@@ -543,4 +543,13 @@
   <data name="Positions" xml:space="preserve">
     <value>Posiciones</value>
   </data>
+  <data name="Watch" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="Prediction" xml:space="preserve">
+    <value>Predicción</value>
+  </data>
+  <data name="WatchPredictions" xml:space="preserve">
+    <value>Ver predicciones</value>
+  </data>
 </root>
