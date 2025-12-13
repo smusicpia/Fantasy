@@ -23,5 +23,7 @@ public class UserGroupsUnitOfWork : GenericUnitOfWork<UserGroup>, IUserGroupsUni
 
     public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _userGroupsRepository.GetTotalRecordsAsync(pagination);
 
+    public async Task<ActionResponse<UserGroup>> JoinAsync(JoinGroupDTO joinGroupDTO) => await _userGroupsRepository.JoinAsync(joinGroupDTO);
+
     public async Task<ActionResponse<UserGroup>> UpdateAsync(UserGroupDTO userGroupDTO) => await _userGroupsRepository.UpdateAsync(userGroupDTO);
 }
