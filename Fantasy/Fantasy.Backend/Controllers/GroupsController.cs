@@ -55,6 +55,13 @@ public class GroupsController : GenericController<Group>
         return NotFound(response.Message);
     }
 
+    [HttpGet("CheckPredictionsForAllMatches/{id}")]
+    public async Task<IActionResult> CheckPredictionsForAllMatchesAsync(int id)
+    {
+        await _groupsUnitOfWork.CheckPredictionsForAllMatchesAsync(id);
+        return Ok();
+    }
+
     [HttpGet("code/{code}")]
     public async Task<IActionResult> GetAsync(string code)
     {

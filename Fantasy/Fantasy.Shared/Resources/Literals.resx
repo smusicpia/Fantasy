@@ -537,4 +537,10 @@
   <data name="ConfirmGroupMessage" xml:space="preserve">
     <value>To join the group: {0}, click the button.</value>
   </data>
+  <data name="Predictions" xml:space="preserve">
+    <value>Predictions</value>
+  </data>
+  <data name="Positions" xml:space="preserve">
+    <value>Positions</value>
+  </data>
 </root>

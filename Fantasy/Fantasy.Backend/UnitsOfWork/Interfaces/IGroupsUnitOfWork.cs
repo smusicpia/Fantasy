@@ -8,6 +8,8 @@ public interface IGroupsUnitOfWork
 {
     Task<ActionResponse<Group>> AddAsync(GroupDTO groupDTO);
 
+    Task CheckPredictionsForAllMatchesAsync(int id);
+
     Task<ActionResponse<Group>> GetAsync(int id);
 
     Task<ActionResponse<Group>> GetAsync(string code);

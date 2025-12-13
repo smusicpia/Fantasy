@@ -249,7 +249,7 @@ public class GroupsRepository : GenericRepository<Group>, IGroupsRepository
         var tournament = await _context.Tournaments
             .Include(x => x.Matches)
             .FirstOrDefaultAsync(x => x.Id == group.TournamentId);
-        if (tournament == null)
+        if (group == null)
         {
             return;
         }
@@ -279,8 +279,15 @@ public class GroupsRepository : GenericRepository<Group>, IGroupsRepository
 
         if (newPredictions.Count > 0)
         {
-            _context.AddRange(newPredictions);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.AddRange(newPredictions);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
         }
     }
 
