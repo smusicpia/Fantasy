@@ -520,10 +520,10 @@
     <value>Activo</value>
   </data>
   <data name="CopyInvitationURLTitle" xml:space="preserve">
-    <value>Copiar enlace de invitación al grupo</value>
+    <value>Copiar invitación</value>
   </data>
   <data name="InvitationURLCopied" xml:space="preserve">
-    <value>Enlace de invitación al grupo copiado</value>
+    <value>Link de invitación al grupo {0} copiado al portapapeles. Compartirlo con sus amigos para que se unan al grupo.</value>
   </data>
   <data name="UserAddedToGroupOk" xml:space="preserve">
     <value>Usuario agregado al grupo. Ya el usuario puede entrar e ingresar sus predicciones.</value>
@@ -533,5 +533,8 @@
   </data>
   <data name="JoinExistingGroup" xml:space="preserve">
     <value>Unirse a un grupo existente</value>
+  </data>
+  <data name="ConfirmGroupMessage" xml:space="preserve">
+    <value>Para unirse al grupo: {0}, haga click en el botón.</value>
   </data>
 </root>

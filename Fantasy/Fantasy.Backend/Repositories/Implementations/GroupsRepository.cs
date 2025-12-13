@@ -166,6 +166,26 @@ public class GroupsRepository : GenericRepository<Group>, IGroupsRepository
         };
     }
 
+    public async Task<ActionResponse<Group>> GetAsync(string code)
+    {
+        var group = await _context.Groups.FirstOrDefaultAsync(x => x.Code == code);
+
+        if (group == null)
+        {
+            return new ActionResponse<Group>
+            {
+                WasSuccess = false,
+                Message = "ERR001"
+            };
+        }
+
+        return new ActionResponse<Group>
+        {
+            WasSuccess = true,
+            Result = group
+        };
+    }
+
     public async Task<ActionResponse<Group>> UpdateAsync(GroupDTO groupDTO)
     {
         var currentGroup = await _context.Groups.FindAsync(groupDTO.Id);
@@ -214,26 +234,6 @@ public class GroupsRepository : GenericRepository<Group>, IGroupsRepository
                 Message = exception.Message
             };
         }
-    }
-
-    public async Task<ActionResponse<Group>> GetAsync(string code)
-    {
-        var group = await _context.Groups.FirstOrDefaultAsync(x => x.Code == code);
-
-        if (group == null)
-        {
-            return new ActionResponse<Group>
-            {
-                WasSuccess = false,
-                Message = "ERR001"
-            };
-        }
-
-        return new ActionResponse<Group>
-        {
-            WasSuccess = true,
-            Result = group
-        };
     }
 
     public async Task CheckPredictionsForAllMatchesAsync(int id)

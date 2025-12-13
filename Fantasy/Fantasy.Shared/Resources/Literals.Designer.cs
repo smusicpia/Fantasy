@@ -250,7 +250,16 @@ namespace Fantasy.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy Invitation URL.
+        ///   Looks up a localized string similar to To join the group: {0}, click the button..
+        /// </summary>
+        public static string ConfirmGroupMessage {
+            get {
+                return ResourceManager.GetString("ConfirmGroupMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Invitation.
         /// </summary>
         public static string CopyInvitationURLTitle {
             get {
@@ -646,7 +655,7 @@ namespace Fantasy.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invitation URL Copied.
+        ///   Looks up a localized string similar to Group invitation link {0} copied to clipboard. Share it with your friends to join the group..
         /// </summary>
         public static string InvitationURLCopied {
             get {
