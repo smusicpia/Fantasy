@@ -42,6 +42,17 @@ public class UserGroupsController : GenericController<UserGroup>
         return NotFound(response.Message);
     }
 
+    [HttpGet("{groupId}/{email}")]
+    public async Task<IActionResult> GetAsync(int groupId, string email)
+    {
+        var response = await _userGroupsUnitOfWork.GetAsync(groupId, email);
+        if (response.WasSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return NotFound(response.Message);
+    }
+
     [HttpGet("totalRecordsPaginated")]
     public async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
     {

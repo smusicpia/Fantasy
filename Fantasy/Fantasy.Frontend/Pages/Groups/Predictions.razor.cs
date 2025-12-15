@@ -4,6 +4,7 @@ using Fantasy.Shared.Resources;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 
 using MudBlazor;
@@ -20,46 +21,79 @@ public partial class Predictions
     private bool loading;
     private const string baseUrlMatch = "api/predictions";
     private string infoFormat = "{first_item}-{last_item} de {all_items}";
+    private bool userEnabledForGroup;
+    private string username = string.Empty;
 
     [Parameter] public int GroupId { get; set; }
 
-    [Inject] private IRepository Repository { get; set; } = null!;
+    [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
-    [Inject] private ISnackbar Snackbar { get; set; } = null!;
-    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private IStringLocalizer<Literals> Localizer { get; set; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+    [Inject] private IRepository Repository { get; set; } = null!;
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
     [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadAsync();
+        await LoadUserNameAsync();
+        await CheckUserEnabledAsync();
+    }
+
+    private bool CanWatch(Prediction prediction)
+    {
+        if (prediction.Match.GoalsLocal != null || prediction.Match.GoalsVisitor != null)
+        {
+            return true;
+        }
+
+        var dateMatch = prediction.Match.Date.ToLocalTime();
+        var currentDate = DateTime.Now;
+        var minutesMatch = dateMatch.Subtract(DateTime.MinValue).TotalMinutes;
+        var minutesNow = currentDate.Subtract(DateTime.MinValue).TotalMinutes;
+        var difference = minutesNow - minutesMatch;
+        var canWatch = difference >= -10;
+        return canWatch;
+    }
+
+    private async Task CheckUserEnabledAsync()
+    {
+        var responseHttp = await Repository.GetAsync<UserGroup>($"api/userGroups/{GroupId}/{username}");
+
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode != System.Net.HttpStatusCode.NotFound)
+            {
+                var messageError = await responseHttp.GetErrorMessageAsync();
+                Snackbar.Add(messageError!, Severity.Error);
+            }
+        }
+        var userGroup = responseHttp.Response;
+        userEnabledForGroup = userGroup!.IsActive;
+    }
+
+    private async Task EditPredictionAsync(int id)
+    {
+        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
+        var parameters = new DialogParameters
+    {
+        { "Id", id }
+    };
+        var dialog = DialogService.Show<PredictionEdit>($"{Localizer["Edit"]} {Localizer["Prediction"]}", parameters, options);
+
+        var result = await dialog.Result;
+        if (result!.Canceled)
+        {
+            await LoadAsync();
+            await table.ReloadServerData();
+        }
     }
 
     private async Task LoadAsync()
     {
         await LoadTotalRecords();
-    }
-
-    private async Task<bool> LoadTotalRecords()
-    {
-        loading = true;
-
-        var url = $"{baseUrlMatch}/totalRecordsPaginated/?id={GroupId}";
-        if (!string.IsNullOrWhiteSpace(Filter))
-        {
-            url += $"&filter={Filter}";
-        }
-        var responseHttp = await Repository.GetAsync<int>(url);
-        if (responseHttp.Error)
-        {
-            var message = await responseHttp.GetErrorMessageAsync();
-            Snackbar.Add(Localizer[message!], Severity.Error);
-            return false;
-        }
-        totalRecords = responseHttp.Response;
-        loading = false;
-        return true;
     }
 
     private async Task<TableData<Prediction>> LoadListAsync(TableState state, CancellationToken cancellationToken)
@@ -91,11 +125,36 @@ public partial class Predictions
         };
     }
 
-    private async Task SetFilterValue(string value)
+    private async Task<bool> LoadTotalRecords()
     {
-        Filter = value;
-        await LoadAsync();
-        await table.ReloadServerData();
+        loading = true;
+
+        var url = $"{baseUrlMatch}/totalRecordsPaginated/?id={GroupId}";
+        if (!string.IsNullOrWhiteSpace(Filter))
+        {
+            url += $"&filter={Filter}";
+        }
+        var responseHttp = await Repository.GetAsync<int>(url);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            Snackbar.Add(Localizer[message!], Severity.Error);
+            return false;
+        }
+        totalRecords = responseHttp.Response;
+        loading = false;
+        return true;
+    }
+
+    private async Task LoadUserNameAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            username = user.Identity.Name!;
+        }
     }
 
     private void ReturnAction()
@@ -103,21 +162,11 @@ public partial class Predictions
         NavigationManager.NavigateTo("/groups");
     }
 
-    private async Task EditPredictionAsync(int id)
+    private async Task SetFilterValue(string value)
     {
-        var options = new DialogOptions() { CloseOnEscapeKey = true, CloseButton = true };
-        var parameters = new DialogParameters
-    {
-        { "Id", id }
-    };
-        var dialog = DialogService.Show<PredictionEdit>($"{Localizer["Edit"]} {Localizer["Prediction"]}", parameters, options);
-
-        var result = await dialog.Result;
-        if (result!.Canceled)
-        {
-            await LoadAsync();
-            await table.ReloadServerData();
-        }
+        Filter = value;
+        await LoadAsync();
+        await table.ReloadServerData();
     }
 
     private async Task WatchPredictionsAsync(Prediction prediction)
@@ -137,21 +186,5 @@ public partial class Predictions
         var dialog = DialogService.Show<WatchPredictions>($"{Localizer["Watch"]} {Localizer["Predictions"]}", parameters, options);
 
         await dialog.Result;
-    }
-
-    private bool CanWatch(Prediction prediction)
-    {
-        if (prediction.Match.GoalsLocal != null || prediction.Match.GoalsVisitor != null)
-        {
-            return true;
-        }
-
-        var dateMatch = prediction.Match.Date.ToLocalTime();
-        var currentDate = DateTime.Now;
-        var minutesMatch = dateMatch.Subtract(DateTime.MinValue).TotalMinutes;
-        var minutesNow = currentDate.Subtract(DateTime.MinValue).TotalMinutes;
-        var difference = minutesNow - minutesMatch;
-        var canWatch = difference >= -10;
-        return canWatch;
     }
 }

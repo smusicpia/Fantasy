@@ -63,13 +63,13 @@ public partial class GroupsIndex
             {
                 CloseOnEscapeKey = true,
                 CloseButton = true,
-                MaxWidth = MaxWidth.Large,
+                MaxWidth = MaxWidth.Medium,
                 FullWidth = true
             };
             var parameters = new DialogParameters
-            {
-                { "GroupId", group.Id },
-            };
+        {
+            { "GroupId", group.Id },
+        };
             var dialog = DialogService.Show<UsersGroup>(@Localizer["AdminUsersGroup"], parameters, options);
             await dialog.Result;
         }

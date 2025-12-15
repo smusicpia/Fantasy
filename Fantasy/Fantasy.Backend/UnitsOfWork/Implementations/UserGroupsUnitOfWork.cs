@@ -19,6 +19,8 @@ public class UserGroupsUnitOfWork : GenericUnitOfWork<UserGroup>, IUserGroupsUni
 
     public override async Task<ActionResponse<UserGroup>> GetAsync(int id) => await _userGroupsRepository.GetAsync(id);
 
+    public async Task<ActionResponse<UserGroup>> GetAsync(int groupId, string email) => await _userGroupsRepository.GetAsync(groupId, email);
+
     public async Task<ActionResponse<UserGroup>> AddAsync(UserGroupDTO userGroupDTO) => await _userGroupsRepository.AddAsync(userGroupDTO);
 
     public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _userGroupsRepository.GetTotalRecordsAsync(pagination);
