@@ -10,6 +10,10 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <MudNavMenu>
+            <MudStack AlignItems="AlignItems.Center">
+                <MudImage Src="images/Logo.png" Width="200" Class="p-3" />
+            </MudStack>
+            <MudDivider />
             <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Rounded.Home">@Localizer["Home"]</MudNavLink>
             <MudDivider />
              <AuthorizeView Roles="Admin">
