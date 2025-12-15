@@ -55,6 +55,7 @@ public class PredictionsController : GenericController<Prediction>
         return NotFound(response.Message);
     }
 
+    [AllowAnonymous]
     [HttpGet("positions")]
     public async Task<IActionResult> GetPositionsAsync([FromQuery] PaginationDTO pagination)
     {
@@ -66,6 +67,7 @@ public class PredictionsController : GenericController<Prediction>
         return BadRequest();
     }
 
+    [AllowAnonymous]
     [HttpGet("totalRecordsForPositionsPaginated")]
     public async Task<IActionResult> GetTotalRecordsForPositionsAsync([FromQuery] PaginationDTO pagination)
     {

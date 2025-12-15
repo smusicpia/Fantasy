@@ -1,4 +1,5 @@
 using Fantasy.Frontend.Helpers;
+using Fantasy.Frontend.Pages.Groups;
 using Fantasy.Frontend.Repositories;
 using Fantasy.Shared.Entities;
 using Fantasy.Shared.Resources;
@@ -20,6 +21,7 @@ public partial class Home
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
     [Inject] private IClipboardService ClipboardService { get; set; } = null!;
     [Inject] private IStringLocalizer<Parameters> Parameters { get; set; } = null!;
+    [Inject] private IDialogService DialogService { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -46,5 +48,25 @@ public partial class Home
         await ClipboardService.CopyToClipboardAsync(joinURL);
         var text = string.Format(Localizer["InvitationURLCopied"], group!.Name);
         Snackbar.Add(text, Severity.Success);
+    }
+
+    private async Task GroupDetailsAsync(Group group)
+    {
+        {
+            var options = new DialogOptions()
+            {
+                CloseOnEscapeKey = true,
+                CloseButton = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            };
+            var parameters = new DialogParameters
+        {
+            { "GroupId", group.Id },
+            { "IsAnonymouns", true }
+        };
+            var dialog = DialogService.Show<GroupDetails>(@Localizer["GroupDetails"], parameters, options);
+            await dialog.Result;
+        }
     }
 }

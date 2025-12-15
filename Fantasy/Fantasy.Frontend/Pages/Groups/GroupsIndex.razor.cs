@@ -85,7 +85,7 @@ public partial class GroupsIndex
 
     private void GroupDetails(Group group)
     {
-        NavigationManager.NavigateTo($"/groups/details/{group.Id}");
+        NavigationManager.NavigateTo($"/groups/details/{group.Id}/false");
     }
 
     private async Task LoadTotalRecordsAsync()

@@ -56,6 +56,7 @@ public class GroupsController : GenericController<Group>
         return BadRequest();
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public override async Task<IActionResult> GetAsync(int id)
     {
@@ -67,6 +68,7 @@ public class GroupsController : GenericController<Group>
         return NotFound(response.Message);
     }
 
+    [AllowAnonymous]
     [HttpGet("CheckPredictionsForAllMatches/{id}")]
     public async Task<IActionResult> CheckPredictionsForAllMatchesAsync(int id)
     {
