@@ -55,19 +55,17 @@ else
                 <MudText Typo="Typo.h3" Align="Align.Center">@context.Points</MudText>
             </MudTd>
             <MudTd>
-                @* @if (CanWatch(context))
+                @if (CanWatch(context))
                 {
                     <MudTooltip Text="@Localizer["WatchPredictions"]">
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Info"
-                                   OnClick="@(() => WatchPredictionsAsync(@context))"
-                                   Disabled="@(!userEnabledForGroup)">
+                                   Color="Color.Info">
                             <MudIcon Icon="@Icons.Material.Filled.Visibility" />
                         </MudButton>
                     </MudTooltip>
                 }
                 else
-                { *@
+                {
                     <MudTooltip Text="@Localizer["Edit"]">
                         <MudButton Variant="Variant.Filled"
                                    Color="Color.Warning"
@@ -75,7 +73,7 @@ else
                             <MudIcon Icon="@Icons.Material.Filled.Edit" />
                         </MudButton>
                     </MudTooltip>
-               @*  } *@
+                }
             </MudTd>
 
         </RowTemplate>

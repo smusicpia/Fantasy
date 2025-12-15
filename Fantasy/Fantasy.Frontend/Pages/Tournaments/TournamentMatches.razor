@@ -81,12 +81,21 @@ else
                             <MudIcon Icon="@Icons.Material.Filled.Edit" />
                         </MudButton>
                     </MudTooltip>
+                    <MudButton Variant="Variant.Outlined"
+                               EndIcon="@Icons.Material.Filled.Close"
+                               Color="Color.Info"
+                               OnClick="@(() => CloseMatchAsync(context.Id))"
+                               Class="me-2"
+                               Disabled="@(context.GoalsLocal != null || context.GoalsVisitor != null)">
+                        @Localizer["CloseMatch"]
+                    </MudButton>
                     <MudTooltip Text="@Localizer["Delete"]">
                         <MudButton Variant="Variant.Filled"
+                                   EndIcon="@Icons.Material.Filled.Delete"
                                    Color="Color.Error"
                                    OnClick="@(() => DeleteAsync(@context))"
                                    Disabled="@(context.GoalsLocal != null || context.GoalsVisitor != null)">
-                            <MudIcon Icon="@Icons.Material.Filled.Delete" />
+                            @Localizer["Delete"]
                         </MudButton>
                     </MudTooltip>
                 </MudStack>
