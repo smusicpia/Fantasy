@@ -59,8 +59,10 @@ else
                 {
                     <MudTooltip Text="@Localizer["WatchPredictions"]">
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Info">
-                            <MudIcon Icon="@Icons.Material.Filled.Visibility" />
+                                   EndIcon="@Icons.Material.Filled.Visibility"
+                                   Color="Color.Info"
+                                   OnClick=@(() => WatchPredictionsAsync(@context))>
+                            @Localizer["Watch"] @Localizer["Predictions"]
                         </MudButton>
                     </MudTooltip>
                 }

@@ -11,4 +11,6 @@ public class PaginationDTO
     public string? Filter { get; set; }
 
     public string? Email { get; set; }
+
+    public int Id2 { get; set; }
 }
