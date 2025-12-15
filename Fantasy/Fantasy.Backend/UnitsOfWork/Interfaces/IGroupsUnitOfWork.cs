@@ -10,6 +10,8 @@ public interface IGroupsUnitOfWork
 
     Task CheckPredictionsForAllMatchesAsync(int id);
 
+    Task<ActionResponse<IEnumerable<Group>>> GetAllAsync();
+
     Task<ActionResponse<Group>> GetAsync(int id);
 
     Task<ActionResponse<Group>> GetAsync(string code);

@@ -15,6 +15,8 @@ public class GroupsUnitOfWork : GenericUnitOfWork<Group>, IGroupsUnitOfWork
         _groupsRepository = groupsRepository;
     }
 
+    public async Task<ActionResponse<IEnumerable<Group>>> GetAllAsync() => await _groupsRepository.GetAllAsync();
+
     public override async Task<ActionResponse<IEnumerable<Group>>> GetAsync(PaginationDTO pagination) => await _groupsRepository.GetAsync(pagination);
 
     public override async Task<ActionResponse<Group>> GetAsync(int id) => await _groupsRepository.GetAsync(id);
