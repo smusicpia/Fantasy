@@ -14,5 +14,9 @@ public interface IPredictionsRepository
 
     Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination);
 
+    Task<ActionResponse<IEnumerable<PositionDTO>>> GetPositionsAsync(PaginationDTO pagination);
+
+    Task<ActionResponse<int>> GetTotalRecordsForPositionsAsync(PaginationDTO pagination);
+
     Task<ActionResponse<Prediction>> UpdateAsync(PredictionDTO predictionDTO);
 }

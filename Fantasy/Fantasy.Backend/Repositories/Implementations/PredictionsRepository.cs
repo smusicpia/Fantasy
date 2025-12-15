@@ -290,6 +290,61 @@ public class PredictionsRepository : GenericRepository<Prediction>, IPredictions
         };
     }
 
+    public async Task<ActionResponse<IEnumerable<PositionDTO>>> GetPositionsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Predictions
+            .Where(x => x.GroupId == pagination.Id && x.Points.HasValue)
+            .GroupBy(x => x.User)
+            .Select(x => new PositionDTO
+            {
+                User = x.Key,
+                Points = x.Sum(y => y.Points ?? 0)
+            })
+            .OrderByDescending(x => x.Points)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.User.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
+                                             x.User.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        return new ActionResponse<IEnumerable<PositionDTO>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
+    public async Task<ActionResponse<int>> GetTotalRecordsForPositionsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Predictions
+            .Where(x => x.GroupId == pagination.Id && x.Points.HasValue)
+            .GroupBy(x => x.User)
+            .Select(x => new PositionDTO
+            {
+                User = x.Key,
+                Points = x.Sum(y => y.Points ?? 0)
+            })
+            .OrderByDescending(x => x.Points)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.User.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
+                                             x.User.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
+        };
+    }
+
     public virtual bool CanWatch(Prediction prediction)
     {
         if (prediction.Match.GoalsLocal != null || prediction.Match.GoalsVisitor != null)
