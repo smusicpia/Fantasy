@@ -74,4 +74,15 @@ public class MatchesController : GenericController<Match>
         }
         return BadRequest(action.Message);
     }
+
+    [HttpGet("reopen/{id}")]
+    public async Task<IActionResult> ReOpenMatchAsync(int id)
+    {
+        var response = await _matchesUnitOfWork.ReOpenMatchAsync(id);
+        if (response.WasSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return NotFound(response.Message);
+    }
 }

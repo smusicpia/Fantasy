@@ -23,5 +23,7 @@ public class MatchesUnitOfWork : GenericUnitOfWork<Match>, IMatchesUnitOfWork
 
     public async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _matchesRepository.GetTotalRecordsAsync(pagination);
 
+    public async Task<ActionResponse<bool>> ReOpenMatchAsync(int id) => await _matchesRepository.ReOpenMatchAsync(id);
+
     public async Task<ActionResponse<Match>> UpdateAsync(MatchDTO matchDTO) => await _matchesRepository.UpdateAsync(matchDTO);
 }

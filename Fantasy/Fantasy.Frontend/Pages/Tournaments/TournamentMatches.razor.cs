@@ -26,14 +26,13 @@ public partial class TournamentMatches
     private const string baseUrlMatch = "api/matches";
     private string infoFormat = "{first_item}-{last_item} de {all_items}";
 
-    [Parameter] public int TournamentId { get; set; }
-
     [Inject] private IRepository Repository { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private IStringLocalizer<Literals> Localizer { get; set; } = null!;
 
+    [Parameter] public int TournamentId { get; set; }
     [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -211,5 +210,32 @@ public partial class TournamentMatches
             await LoadAsync();
             await table.ReloadServerData();
         }
+    }
+
+    private async Task ReOpenMatchAsync(Match match)
+    {
+        var parameters = new DialogParameters
+    {
+        { "Message", string.Format(Localizer["ReOpenMatchConfirm"], Localizer["Match"], $"{match.Local.Name} Vs. {match.Visitor.Name}") }
+    };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, CloseOnEscapeKey = true };
+        var dialog = DialogService.Show<ConfirmDialog>(Localizer["Confirmation"], parameters, options);
+        var result = await dialog.Result;
+        if (result!.Canceled)
+        {
+            return;
+        }
+
+        var responseHttp = await Repository.GetAsync($"api/Matches/reopen/{match.Id}");
+        if (responseHttp.Error)
+        {
+            var mensajeError = await responseHttp.GetErrorMessageAsync();
+            Snackbar.Add(Localizer[mensajeError!], Severity.Error);
+            return;
+        }
+
+        await LoadAsync();
+        await table.ReloadServerData();
+        Snackbar.Add(Localizer["ReOpenMatchMessage"], Severity.Success);
     }
 }

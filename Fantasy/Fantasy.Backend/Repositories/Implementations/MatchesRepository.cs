@@ -150,6 +150,36 @@ public class MatchesRepository : GenericRepository<Match>, IMatchesRepository
         };
     }
 
+    public async Task<ActionResponse<bool>> ReOpenMatchAsync(int id)
+    {
+        var currentMatch = await _context.Matches
+            .Include(x => x.Predictions)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        if (currentMatch == null)
+        {
+            return new ActionResponse<bool>
+            {
+                WasSuccess = false,
+                Message = "ERR012"
+            };
+        }
+
+        currentMatch.IsClosed = false;
+        currentMatch.GoalsLocal = null;
+        currentMatch.GoalsVisitor = null;
+        foreach (var prediction in currentMatch.Predictions!)
+        {
+            prediction.Points = null;
+        }
+        _context.Update(currentMatch);
+        await _context.SaveChangesAsync();
+
+        return new ActionResponse<bool>
+        {
+            WasSuccess = true,
+        };
+    }
+
     public async Task<ActionResponse<Match>> UpdateAsync(MatchDTO matchDTO)
     {
         var currentMatch = await _context.Matches.FindAsync(matchDTO.Id);

@@ -14,5 +14,7 @@ public interface IMatchesUnitOfWork
 
     Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination);
 
+    Task<ActionResponse<bool>> ReOpenMatchAsync(int id);
+
     Task<ActionResponse<Match>> UpdateAsync(MatchDTO matchDTO);
 }
