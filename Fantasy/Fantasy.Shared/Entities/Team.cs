@@ -24,4 +24,7 @@ public class Team
     public ICollection<TournamentTeam>? TournamentTeams { get; set; }
 
     public int TournamentsCount => TournamentTeams == null ? 0 : TournamentTeams.Count;
+
+    [Display(Name = "IsImageSquare", ResourceType = typeof(Literals))]
+    public bool IsImageSquare { get; set; }
 }
