@@ -49,7 +49,7 @@ public partial class MatchForm
         base.OnParametersSet();
         await LoadMatchesAsync();
         isActiveMessage = MatchDTO.IsActive ? Localizer["MatchActive"] : Localizer["MatchInactive"];
-        //doublePointsMessage = MatchDTO.DoublePoints ? Localizer["DoublePointsMatchMessage"] : Localizer["SinglePointsMatchMessage"];
+        doublePointsMessage = MatchDTO.DoublePoints ? Localizer["DoublePointsMatchMessage"] : Localizer["SinglePointsMatchMessage"];
         if (MatchDTO.Id != 0)
         {
             LoadInitialValues();
@@ -202,5 +202,17 @@ public partial class MatchForm
         }
 
         return !hasErros;
+    }
+
+    private void SetDoublePointsOff()
+    {
+        MatchDTO.DoublePoints = false;
+        doublePointsMessage = Localizer["SinglePointsMatchMessage"];
+    }
+
+    private void SetDoublePointsOn()
+    {
+        MatchDTO.DoublePoints = true;
+        doublePointsMessage = Localizer["DoublePointsMatchMessage"];
     }
 }

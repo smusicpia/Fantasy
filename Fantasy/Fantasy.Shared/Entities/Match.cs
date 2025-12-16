@@ -48,4 +48,7 @@ public class Match
     public ICollection<Prediction>? Predictions { get; set; }
 
     public int PredictionsCount => Predictions == null ? 0 : Predictions.Count;
+
+    [Display(Name = "DoublePoints", ResourceType = typeof(Literals))]
+    public bool DoublePoints { get; set; }
 }

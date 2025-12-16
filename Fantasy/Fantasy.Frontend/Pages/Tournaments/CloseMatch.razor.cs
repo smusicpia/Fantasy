@@ -51,6 +51,7 @@ public partial class CloseMatch
                 IsActive = match!.IsActive,
                 LocalId = match!.LocalId,
                 VisitorId = match!.VisitorId,
+                DoublePoints = match!.DoublePoints,
             };
         }
     }

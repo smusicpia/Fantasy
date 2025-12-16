@@ -394,6 +394,24 @@ namespace Fantasy.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double Points.
+        /// </summary>
+        public static string DoublePoints {
+            get {
+                return ResourceManager.GetString("DoublePoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double Points Match.
+        /// </summary>
+        public static string DoublePointsMatchMessage {
+            get {
+                return ResourceManager.GetString("DoublePointsMatchMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -1308,6 +1326,15 @@ namespace Fantasy.Shared.Resources {
         public static string SendEmailConfirmationMessage {
             get {
                 return ResourceManager.GetString("SendEmailConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Single Points Match.
+        /// </summary>
+        public static string SinglePointsMatchMessage {
+            get {
+                return ResourceManager.GetString("SinglePointsMatchMessage", resourceCulture);
             }
         }
         

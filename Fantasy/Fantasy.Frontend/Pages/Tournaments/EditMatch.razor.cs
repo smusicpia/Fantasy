@@ -51,6 +51,7 @@ public partial class EditMatch
                 LocalId = match!.LocalId,
                 TournamentId = match!.TournamentId,
                 VisitorId = match!.VisitorId,
+                DoublePoints = match!.DoublePoints,
             };
         }
     }

@@ -612,4 +612,13 @@
         &lt;li&gt;Matches from the second round onwards will award double points.&lt;/li&gt;
     &lt;/ul&gt;</value>
   </data>
+  <data name="DoublePoints" xml:space="preserve">
+    <value>Double Points</value>
+  </data>
+  <data name="DoublePointsMatchMessage" xml:space="preserve">
+    <value>Double Points Match</value>
+  </data>
+  <data name="SinglePointsMatchMessage" xml:space="preserve">
+    <value>Single Points Match</value>
+  </data>
 </root>

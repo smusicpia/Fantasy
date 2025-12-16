@@ -612,4 +612,13 @@
         &lt;li&gt;Los partidos de segunda ronda en adelante otorgarán el doble de puntos.&lt;/li&gt;
     &lt;/ul&gt;</value>
   </data>
+  <data name="DoublePoints" xml:space="preserve">
+    <value>Puntaje Doble</value>
+  </data>
+  <data name="DoublePointsMatchMessage" xml:space="preserve">
+    <value>Partido de Doble Puntaje</value>
+  </data>
+  <data name="SinglePointsMatchMessage" xml:space="preserve">
+    <value>Partido de Puntaje Sencillo</value>
+  </data>
 </root>
