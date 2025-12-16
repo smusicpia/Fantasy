@@ -1,3 +1,4 @@
+using Fantasy.Frontend.Helpers;
 using Fantasy.Shared.Resources;
 
 using Microsoft.AspNetCore.Components;
@@ -8,4 +9,10 @@ namespace Fantasy.Frontend;
 public partial class App
 {
     [Inject] private IStringLocalizer<Literals> Localizer { get; set; } = null!;
+    [Inject] private LanguageService LanguageService { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LanguageService.InitializeLanguageAsync();
+    }
 }

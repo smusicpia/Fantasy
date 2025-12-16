@@ -636,4 +636,10 @@
   <data name="Rectangular" xml:space="preserve">
     <value>Rectangular</value>
   </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
 </root>
